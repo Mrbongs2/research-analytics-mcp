@@ -1,0 +1,74 @@
+# Recommended MCP servers for "MCP Training & Learning Development".
+# Copy the blocks you need into ~/.codex/config.toml. API keys stay EMPTY here:
+# fill them only in your local config (never commit them).
+
+# ---------------------------------------------------------------- core (this repo)
+[mcp_servers.research-analytics]
+command = "uvx"
+args = ["--from", "git+https://github.com/OWNER/research-analytics-mcp", "research-analytics-mcp"]
+startup_timeout_sec = 60
+tool_timeout_sec = 300
+[mcp_servers.research-analytics.env]
+OPENALEX_MAILTO = ""
+SEMANTIC_SCHOLAR_API_KEY = ""
+NCBI_API_KEY = ""
+MUAPI_API_KEY = ""          # Open-Higgsfield / MuAPI (paid)
+
+# ---------------------------------------------------------------- research & evidence
+[mcp_servers.openalex]
+command = "npx"
+args = ["-y", "@cyanheads/openalex-mcp-server"]
+[mcp_servers.openalex.env]
+OPENALEX_API_KEY = ""        # optional, raises the daily budget
+
+[mcp_servers.medical-mcp]
+command = "npx"
+args = ["-y", "medical-mcp"]  # FDA, WHO, PubMed, RxNorm, clinical trials, guidelines
+
+[mcp_servers.notebooklm]
+command = "npx"
+args = ["-y", "@m4ykeldev/notebooklm-mcp"]
+# sign in once in a terminal: npx -y @m4ykeldev/notebooklm-mcp auth
+
+[mcp_servers.fetch]
+command = "uvx"
+args = ["mcp-server-fetch"]
+
+[mcp_servers.markitdown]
+command = "uvx"
+args = ["markitdown-mcp"]     # PDF / DOCX / PPTX -> Markdown (papers, guidelines, slides)
+
+# ---------------------------------------------------------------- video & teaching material
+[mcp_servers.elevenlabs]
+command = "uvx"
+args = ["elevenlabs-mcp"]
+[mcp_servers.elevenlabs.env]
+ELEVENLABS_API_KEY = ""
+ELEVENLABS_MCP_BASE_PATH = "/path/to/teaching-videos"
+
+[mcp_servers.pixabay]
+command = "npx"
+args = ["-y", "@hanoak/pixabay-mcp-server"]
+[mcp_servers.pixabay.env]
+PIXABAY_API_KEY = ""
+
+[mcp_servers.remotion]
+command = "npx"
+args = ["-y", "@remotion/mcp"]  # Remotion documentation
+
+[mcp_servers.yt-dlp]
+command = "npx"
+args = ["-y", "@kevinwatt/yt-dlp-mcp"]  # only for Creative Commons / own / licensed videos
+
+[mcp_servers.filesystem]
+command = "npx"
+args = ["-y", "@modelcontextprotocol/server-filesystem", "/path/to/teaching-videos"]
+
+# ---------------------------------------------------------------- thinking & memory
+[mcp_servers.sequential-thinking]
+command = "npx"
+args = ["-y", "@modelcontextprotocol/server-sequential-thinking"]
+
+[mcp_servers.memory]
+command = "npx"
+args = ["-y", "@modelcontextprotocol/server-memory"]

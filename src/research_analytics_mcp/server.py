@@ -9,7 +9,7 @@ try:  # MCP Python SDK 2.x
 except ImportError:  # SDK 1.x
     from mcp.server.fastmcp import FastMCP as _Server  # type: ignore[no-redef]
 
-from . import __version__, analytics, database, literature, market, training
+from . import __version__, analytics, database, literature, market, training, video
 
 INSTRUCTIONS = """Research & analytics toolkit: literature search (OpenAlex, Semantic Scholar, PubMed,
 Crossref, ClinicalTrials.gov, WHO GHO), journal targeting, a local research database
@@ -365,6 +365,38 @@ def media_result(request_id: str, wait_seconds: int = 0) -> dict[str, Any]:
 def media_upload(file_path: str) -> dict[str, Any]:
     """Upload a local reference image/video/audio to MuAPI; returns a hosted URL for image/video-conditioned models."""
     return training.media_upload(file_path)
+
+
+# ================================================================ teaching video
+@mcp.tool()
+def video_lesson_plan(title: str, scenes: list[dict[str, Any]], fmt: str = "16:9", words_per_minute: int = 140,
+                      out_dir: str | None = None, project: str | None = None) -> dict[str, Any]:
+    """Plan a medical teaching video. scenes: [{purpose (hook|objectives|concept|demo|mistakes|summary|quiz|references),
+    narration, on_screen_text, visual, objective, paper_ids, duration_s?}]. Times each scene from its word count,
+    checks that clinical numbers have sources from the project, flags pedagogy issues, and writes
+    lesson-plan.json + edit-plan.md to out_dir. fmt: 16:9 | 9:16 | 1:1 | 4:5."""
+    return video.lesson_plan(title, scenes, fmt, words_per_minute, out_dir, project)
+
+
+@mcp.tool()
+def video_captions(scenes: list[dict[str, Any]], out_dir: str | None = None, max_cps: float = 17.0) -> dict[str, Any]:
+    """Captions from scene narration and timing (e.g. video_lesson_plan scenes): captions.srt and Remotion
+    captions.json, max 2 lines x 42 characters, warns above max_cps characters per second."""
+    return video.captions(scenes, out_dir, max_cps)
+
+
+@mcp.tool()
+def video_probe(path: str) -> dict[str, Any]:
+    """Inspect a local video/audio file with ffprobe: duration, resolution, fps, codecs, audio, concat readiness."""
+    return video.probe(path)
+
+
+@mcp.tool()
+def media_search_openverse(query: str, kind: str = "image", license: str = "commercial", n: int = 10,
+                           source: str | None = None) -> dict[str, Any]:
+    """Search Creative Commons images/audio (Wikimedia Commons, Flickr, museums, Freesound) via Openverse; no API key.
+    license: commercial | pd | any. source e.g. 'wikimedia'. Returns licence and attribution lines."""
+    return video.openverse_search(query, kind, license, n, source)
 
 
 def main() -> None:

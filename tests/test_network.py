@@ -32,3 +32,10 @@ def test_clinical_trials():
 def test_journal_issn():
     r = literature.journal_profile("0022-0345")  # Journal of Dental Research
     assert r["matches"][0]["name"]
+
+
+def test_openverse():
+    from research_analytics_mcp import video
+
+    r = video.openverse_search("tooth anatomy", n=3)
+    assert r["hits"] and r["hits"][0]["license"]

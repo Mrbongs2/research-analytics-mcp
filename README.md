@@ -19,6 +19,7 @@ statistics on observational data, market sizing, and evidence-based training des
 | Market research | `market_size_model`, `market_regional_split`, `market_example_assumptions` | Asumsi bersumber (BPS, register, literatur) |
 | Training / L&D | `training_blueprint`, `training_observation_checklist`, `training_evaluation_report`, `training_storyboard` | Database proyek |
 | Media training | `media_generate`, `media_result`, `media_upload` | [Open-Higgsfield](https://github.com/Anil-matcha/Open-Higgsfield-AI) via MuAPI (berbayar, butuh `confirm=true`) |
+| Video pengajaran | `video_lesson_plan`, `video_captions`, `video_probe`, `media_search_openverse` | Database proyek, ffprobe, Openverse (Wikimedia Commons dll., tanpa kunci) |
 
 Skills (format Agent Skills `SKILL.md`) di folder [`skills/`](skills):
 
@@ -26,6 +27,21 @@ Skills (format Agent Skills `SKILL.md`) di folder [`skills/`](skills):
 - [`marketresearch`](skills/marketresearch/SKILL.md) — market size 3 skenario, regional & white space, harga, pesaing, proses bisnis
 - [`medical-analytics`](skills/medical-analytics/SKILL.md) — PICO/MeSH, evidence level, uji statistik, PRISMA
 - [`learning-development`](skills/learning-development/SKILL.md) — desain modul, checklist observasi, Kirkpatrick L1–L4, video training
+- [`edit-videoremotion`](skills/edit-videoremotion/SKILL.md) — video pengajaran medis & materi: bukti → naskah → aset berlisensi → voiceover → caption → FFmpeg/Remotion → QA klinis → evaluasi
+
+## MCP Training & Learning Development
+
+Paket untuk membuat pelatihan kesehatan berbasis bukti dari hulu ke hilir:
+
+1. **Bukti** — `search_pubmed`, `search_openalex`, medical-mcp, NotebookLM, MarkItDown.
+2. **Desain** — `training_blueprint` (Bloom, agenda, rencana Kirkpatrick), `training_observation_checklist`.
+3. **Materi & video** — skill `edit-videoremotion`: `video_lesson_plan` (durasi per adegan, cek sumber
+   angka klinis, prinsip multimedia), aset Openverse/Pixabay/Unsplash, B-roll Open-Higgsfield (MuAPI),
+   voiceover ElevenLabs, `video_captions` (SRT + Remotion), FFmpeg + Remotion, `video_probe` untuk QA.
+4. **Evaluasi** — `db_add_observations` → `training_evaluation_report` (reaction, normalised gain,
+   pass rate checklist, kappa antar-observer, outcome) dan `stats_*`.
+
+Server MCP pendamping yang direkomendasikan (13 server, semua kolom kunci kosong): [`mcp-servers/`](mcp-servers/README.md).
 
 ## Instalasi
 
@@ -44,7 +60,7 @@ uv venv && uv pip install -e ".[dev]"
 
 ### Konfigurasi klien MCP
 
-**Codex CLI** (`~/.codex/config.toml`) — contoh lengkap di [`examples/codex-config.toml`](examples/codex-config.toml):
+**Codex CLI** (`~/.codex/config.toml`) — contoh lengkap (plus server pendamping) di [`mcp-servers/codex-config.toml`](mcp-servers/codex-config.toml):
 
 ```toml
 [mcp_servers.research-analytics]
@@ -55,7 +71,7 @@ args = ["--from", "git+https://github.com/OWNER/research-analytics-mcp", "resear
 OPENALEX_MAILTO = "you@example.com"
 ```
 
-**Klien lain** yang memakai `mcpServers` JSON: lihat [`examples/mcp.json`](examples/mcp.json).
+**Klien lain** yang memakai `mcpServers` JSON: lihat [`mcp-servers/mcp.json`](mcp-servers/mcp.json).
 
 ### Memasang skills
 
@@ -74,6 +90,7 @@ cp -r skills/* ~/.codex/skills/
 | `SEMANTIC_SCHOLAR_API_KEY` | Menghindari rate limit Semantic Scholar |
 | `NCBI_API_KEY` | 10 request/detik ke PubMed |
 | `MUAPI_API_KEY`, `MUAPI_BASE_URL` | Generasi media Open-Higgsfield / MuAPI |
+| `PIXABAY_API_KEY`, `UNSPLASH_ACCESS_KEY` | Skrip stok media skill `edit-videoremotion` |
 
 Lihat [`.env.example`](.env.example).
 
@@ -84,6 +101,8 @@ Lihat [`.env.example`](.env.example).
 2. *"Hitung potensi pasar aligner di Indonesia per provinsi"* → skill `marketresearch`.
 3. *"Buat pelatihan hand hygiene untuk perawat lalu evaluasi pre/post dan observasi 6 minggu"*
    → skill `learning-development`.
+4. *"Buat video 3 menit teknik menyikat gigi metode Bass untuk orang tua, 16:9 + versi Reels"*
+   → skill `edit-videoremotion`.
 
 ## Prinsip
 

@@ -173,3 +173,43 @@ def test_server_registers_tools():
     tools = asyncio.run(server.mcp.list_tools())
     names = {t.name for t in tools}
     assert {"search_openalex", "search_pubmed", "db_literature_matrix", "market_size_model", "media_generate"} <= names
+
+
+# ---------------------------------------------------------------- teaching video
+def test_lesson_plan_flags_unsourced_numbers(tmp_path):
+    from research_analytics_mcp import video
+
+    database.create_project("vid", kind="training")
+    database.add_papers("vid", [{"title": "Bass technique trial", "authors": ["Ali R"], "year": 2023, "status": "included"}])
+    pid = database.list_papers("vid")[0]["id"]
+    scenes = [
+        {"purpose": "hook", "narration": "Gigi berlubang masih sering terjadi pada anak."},
+        {"purpose": "objectives", "narration": "Setelah video ini Anda dapat menyikat gigi dengan metode Bass."},
+        {"purpose": "demo", "narration": "Sikat selama 2 menit, dua kali sehari.", "paper_ids": [pid]},
+        {"purpose": "demo", "narration": "Gunakan pasta 1000 ppm fluoride."},
+        {"purpose": "summary", "narration": "Ingat tiga langkah utama."},
+        {"purpose": "quiz", "narration": "Berapa lama Anda menyikat gigi?"},
+    ]
+    plan = video.lesson_plan("Metode Bass", scenes, out_dir=str(tmp_path), project="vid")
+    assert plan["scenes"][2]["issues"] == [] and plan["scenes"][2]["references"] == ["Ali R (2023)"]
+    assert any("PERLU SUMBER" in x for x in plan["scenes"][3]["issues"])
+    assert plan["ready_for_render"] is False and (tmp_path / "edit-plan.md").exists()
+    cap = video.captions(plan["scenes"], out_dir=str(tmp_path))
+    srt = (tmp_path / "captions.srt").read_text()
+    assert cap["cues"] >= 6 and srt.startswith("1\n00:00:00,000 --> ")
+    assert all(len(line) <= 42 for line in srt.splitlines())
+
+
+def test_video_probe(tmp_path):
+    import shutil
+    import subprocess
+
+    from research_analytics_mcp import video
+
+    if not shutil.which("ffmpeg"):
+        pytest.skip("ffmpeg not installed")
+    f = tmp_path / "t.mp4"
+    subprocess.run(["ffmpeg", "-v", "error", "-f", "lavfi", "-i", "testsrc=size=320x240:rate=30:duration=1",
+                    "-f", "lavfi", "-i", "anullsrc=r=48000:cl=stereo", "-shortest", "-pix_fmt", "yuv420p", str(f)], check=True)
+    p = video.probe(str(f))
+    assert p["video"]["width"] == 320 and p["video"]["fps"] == 30.0 and p["audio"] and p["ready_for_concat"]

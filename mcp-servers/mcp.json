@@ -1,0 +1,110 @@
+{
+  "mcpServers": {
+    "research-analytics": {
+      "command": "uvx",
+      "args": [
+        "--from",
+        "git+https://github.com/OWNER/research-analytics-mcp",
+        "research-analytics-mcp"
+      ],
+      "env": {
+        "OPENALEX_MAILTO": "",
+        "SEMANTIC_SCHOLAR_API_KEY": "",
+        "NCBI_API_KEY": "",
+        "MUAPI_API_KEY": ""
+      }
+    },
+    "openalex": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@cyanheads/openalex-mcp-server"
+      ],
+      "env": {
+        "OPENALEX_API_KEY": ""
+      }
+    },
+    "medical-mcp": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "medical-mcp"
+      ]
+    },
+    "notebooklm": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@m4ykeldev/notebooklm-mcp"
+      ]
+    },
+    "fetch": {
+      "command": "uvx",
+      "args": [
+        "mcp-server-fetch"
+      ]
+    },
+    "markitdown": {
+      "command": "uvx",
+      "args": [
+        "markitdown-mcp"
+      ]
+    },
+    "elevenlabs": {
+      "command": "uvx",
+      "args": [
+        "elevenlabs-mcp"
+      ],
+      "env": {
+        "ELEVENLABS_API_KEY": "",
+        "ELEVENLABS_MCP_BASE_PATH": "/path/to/teaching-videos"
+      }
+    },
+    "pixabay": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@hanoak/pixabay-mcp-server"
+      ],
+      "env": {
+        "PIXABAY_API_KEY": ""
+      }
+    },
+    "remotion": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@remotion/mcp"
+      ]
+    },
+    "yt-dlp": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@kevinwatt/yt-dlp-mcp"
+      ]
+    },
+    "filesystem": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "/path/to/teaching-videos"
+      ]
+    },
+    "sequential-thinking": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-sequential-thinking"
+      ]
+    },
+    "memory": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-memory"
+      ]
+    }
+  }
+}
