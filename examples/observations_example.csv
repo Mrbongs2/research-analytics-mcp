@@ -1,0 +1,9 @@
+subject,group,session,observer,plaque_index,gingival_index
+P01,control,baseline,O1,1.8,1.2
+P02,control,baseline,O1,2.1,1.4
+P03,intervention,baseline,O1,1.9,1.3
+P04,intervention,baseline,O1,2.0,1.5
+P01,control,followup,O1,1.7,1.1
+P02,control,followup,O1,2.0,1.3
+P03,intervention,followup,O1,1.1,0.7
+P04,intervention,followup,O1,1.2,0.8

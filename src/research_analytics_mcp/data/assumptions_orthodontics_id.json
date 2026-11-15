@@ -1,0 +1,20 @@
+{
+  "_about": "Example inputs: braces and aligners in Indonesia (Nov 2026). Copy it for a new product and replace every value AND its source. A value is one number or {low, base, high}. Prices are in rupiah per case.",
+  "_currency_unit": "IDR",
+  "population": {"value": 284438600, "source": "BPS, mid-2025 projection (sum of 38 provinces)"},
+  "target_share": {"value": 0.5381, "source": "BPS SP2020: Gen Z 27.94% + Millennials 25.87% (about age 13-44 in 2025)"},
+  "need_share": {"value": {"low": 0.125, "base": 0.206, "high": 0.35}, "source": "IOTN DHC 4-5: Oley 2015 12.5%; Suala & Wibowo 2021 review mean 20.6%; high = Assumption"},
+  "ability_to_pay_share": {"value": {"low": 0.13704, "base": 0.1713, "high": 0.22052}, "source": "BPS 2024 middle class 17.13%; low = 80% of it; high adds 10% of the aspiring middle class (49.22%) via instalments"},
+  "providers": {"value": 1168, "source": "PDGI certification register, orthodontic specialists (Sp.Ort), 14 Nov 2026"},
+  "cases_per_provider": {"value": {"low": 60, "base": 100, "high": 150}, "source": "Assumption; US 2025 benchmark 295 starts per orthodontist used only as a ceiling"},
+  "secondary_providers": {"value": 51954, "source": "PDGI certification register, general dentists, 14 Nov 2026"},
+  "secondary_share_doing_it": {"value": {"low": 0.10, "base": 0.20, "high": 0.30}, "source": "Assumption (no Indonesian data)"},
+  "cases_per_secondary": {"value": {"low": 10, "base": 15, "high": 20}, "source": "Assumption (no Indonesian data)"},
+  "products": {
+    "metal": {"share": {"low": 0.80, "base": 0.72, "high": 0.62}, "price": {"low": 8000000, "base": 12000000, "high": 18000000}, "source": "Incl. ~20 control visits: OCBC 2024 Rp 5-12 jt install; Suara 2023 Rp 300-500 rb per visit"},
+    "self_ligating": {"share": {"low": 0.12, "base": 0.16, "high": 0.20}, "price": {"low": 15000000, "base": 22000000, "high": 32000000}, "source": "Clinic price pages, Damon Rp 10-35 jt packages"},
+    "aligner": {"share": {"low": 0.08, "base": 0.12, "high": 0.18}, "price": {"low": 15000000, "base": 35000000, "high": 60000000}, "source": "OCBC 2024 Rp 15-65 jt; clinic pages up to Rp 75 jt"}
+  },
+  "local_per_usd": {"value": 15864, "source": "Average 2024 rate"},
+  "treatment_years": {"value": 1.75, "source": "Typical 18-24 months of treatment"}
+}
