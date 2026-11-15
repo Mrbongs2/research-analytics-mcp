@@ -5,7 +5,7 @@
 # ---------------------------------------------------------------- core (this repo)
 [mcp_servers.research-analytics]
 command = "uvx"
-args = ["--from", "git+https://github.com/OWNER/research-analytics-mcp", "research-analytics-mcp"]
+args = ["--from", "git+https://github.com/Mrbongs2/research-analytics-mcp", "research-analytics-mcp"]
 startup_timeout_sec = 60
 tool_timeout_sec = 300
 [mcp_servers.research-analytics.env]

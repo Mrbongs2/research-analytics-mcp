@@ -4,7 +4,7 @@
       "command": "uvx",
       "args": [
         "--from",
-        "git+https://github.com/OWNER/research-analytics-mcp",
+        "git+https://github.com/Mrbongs2/research-analytics-mcp",
         "research-analytics-mcp"
       ],
       "env": {

@@ -48,13 +48,13 @@ Server MCP pendamping yang direkomendasikan (13 server, semua kolom kunci kosong
 Butuh Python ≥ 3.10 dan [uv](https://docs.astral.sh/uv/).
 
 ```bash
-uvx --from git+https://github.com/OWNER/research-analytics-mcp research-analytics-mcp
+uvx --from git+https://github.com/Mrbongs2/research-analytics-mcp research-analytics-mcp
 ```
 
 Atau dari clone lokal:
 
 ```bash
-git clone https://github.com/OWNER/research-analytics-mcp && cd research-analytics-mcp
+git clone https://github.com/Mrbongs2/research-analytics-mcp && cd research-analytics-mcp
 uv venv && uv pip install -e ".[dev]"
 ```
 
@@ -65,7 +65,7 @@ uv venv && uv pip install -e ".[dev]"
 ```toml
 [mcp_servers.research-analytics]
 command = "uvx"
-args = ["--from", "git+https://github.com/OWNER/research-analytics-mcp", "research-analytics-mcp"]
+args = ["--from", "git+https://github.com/Mrbongs2/research-analytics-mcp", "research-analytics-mcp"]
 
 [mcp_servers.research-analytics.env]
 OPENALEX_MAILTO = "you@example.com"
