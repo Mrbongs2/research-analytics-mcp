@@ -257,3 +257,24 @@ def test_alpha_vantage_needs_key(monkeypatch):
     monkeypatch.delenv("ALPHA_VANTAGE_API_KEY", raising=False)
     with pytest.raises(UpstreamError, match="ALPHA_VANTAGE_API_KEY"):
         markets.quote("IBM")
+
+
+def test_rss_nested_title_and_odd_date():
+    from research_analytics_mcp import markets
+
+    xml = """<rss><channel><item><title><a href="/x">Health insurance costs rise</a></title>
+    <link>https://example.org/x</link><description>Survey.</description><pubDate>Nov 23, 2026 3:17pm</pubDate></item>
+    <item><title>Rupiah firm</title><link>https://example.org/y</link><pubDate>Tue, 24 Nov 2026 17:35:00 +0700</pubDate></item>
+    </channel></rss>"""
+    items = markets.parse_rss(xml, "fierce_healthcare", source="Fierce Healthcare")
+    assert items[0]["title"] == "Health insurance costs rise" and items[0]["published"] == "2026-11-23T15:17:00"
+    assert items[1]["published"] == "2026-11-24T10:35:00+00:00"
+
+
+def test_news_feed_validation():
+    from research_analytics_mcp import markets
+
+    with pytest.raises(ValueError):
+        markets.news_headlines(["not_a_feed"])
+    with pytest.raises(ValueError):
+        markets.macro_indicator("inflation", country="IDN/../x")

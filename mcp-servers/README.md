@@ -52,7 +52,9 @@ MarkItDown    (study guide)  MuAPI B-roll                        stats_* (deeper
 
 ## Market & news
 
-Bloomberg headlines come from Bloomberg's public RSS feeds through the `bloomberg_headlines` tool
-of this server (no key). Quotes, FX and news sentiment use Alpha Vantage. The community project
+No key needed: Bloomberg headlines (`bloomberg_headlines`, Bloomberg's public RSS), other outlets
+(`news_headlines`: CNBC, MarketWatch, CNBC Indonesia, Antara, Fierce Healthcare, STAT), FX
+(`market_fx_rate`, `market_fx_history`: ECB reference rates via Frankfurter) and macro/health data
+(`macro_indicator`: World Bank). Optional free Alpha Vantage key: stock quotes, history, sentiment. The community project
 github.com/feremabraz/bloomberg-terminal is a Next.js dashboard demo, not an MCP server; it is not
 included here. None of this is affiliated with Bloomberg L.P. or provides Bloomberg Terminal data.

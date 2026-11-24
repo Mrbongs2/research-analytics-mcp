@@ -19,7 +19,8 @@ statistics on observational data, market sizing, and evidence-based training des
 | Market research | `market_size_model`, `market_regional_split`, `market_example_assumptions` | Asumsi bersumber (BPS, register, literatur) |
 | Training / L&D | `training_blueprint`, `training_observation_checklist`, `training_evaluation_report`, `training_storyboard` | Database proyek |
 | Media training | `media_generate`, `media_result`, `media_upload` | [Open-Higgsfield](https://github.com/Anil-matcha/Open-Higgsfield-AI) via MuAPI (berbayar, butuh `confirm=true`) |
-| Pasar & berita | `bloomberg_headlines`, `market_quote`, `market_symbol_search`, `market_history`, `market_fx_rate`, `market_news_sentiment` | RSS publik Bloomberg (tanpa kunci), Alpha Vantage |
+| Pasar & berita (tanpa kunci) | `bloomberg_headlines`, `news_headlines`, `market_fx_rate`, `market_fx_history`, `macro_indicator` | RSS publik Bloomberg, CNBC, MarketWatch, CNBC Indonesia, Antara, Fierce Healthcare, STAT; kurs ECB (Frankfurter); World Bank |
+| Pasar (kunci gratis opsional) | `market_quote`, `market_symbol_search`, `market_history`, `market_news_sentiment` | Alpha Vantage |
 | Video pengajaran | `video_lesson_plan`, `video_captions`, `video_probe`, `media_search_openverse` | Database proyek, ffprobe, Openverse (Wikimedia Commons dll., tanpa kunci) |
 
 Skills (format Agent Skills `SKILL.md`) di folder [`skills/`](skills):
@@ -28,7 +29,7 @@ Skills (format Agent Skills `SKILL.md`) di folder [`skills/`](skills):
 - [`marketresearch`](skills/marketresearch/SKILL.md) — market size 3 skenario, regional & white space, harga, pesaing, proses bisnis
 - [`medical-analytics`](skills/medical-analytics/SKILL.md) — PICO/MeSH, evidence level, uji statistik, PRISMA
 - [`learning-development`](skills/learning-development/SKILL.md) — desain modul, checklist observasi, Kirkpatrick L1–L4, video training
-- [`market-news`](skills/market-news/SKILL.md) — judul berita Bloomberg terbaru, harga saham/indeks, volatilitas, kurs USD/IDR, sentimen berita
+- [`market-news`](skills/market-news/SKILL.md) — berita Bloomberg & media lain (termasuk Indonesia dan kesehatan), kurs USD/IDR, indikator makro & belanja kesehatan World Bank — semua tanpa kunci; harga saham & sentimen dengan kunci gratis Alpha Vantage
 - [`edit-videoremotion`](skills/edit-videoremotion/SKILL.md) — video pengajaran medis & materi: bukti → naskah → aset berlisensi → voiceover → caption → FFmpeg/Remotion → QA klinis → evaluasi
 
 ## MCP Training & Learning Development
@@ -92,7 +93,7 @@ cp -r skills/* ~/.codex/skills/
 | `SEMANTIC_SCHOLAR_API_KEY` | Menghindari rate limit Semantic Scholar |
 | `NCBI_API_KEY` | 10 request/detik ke PubMed |
 | `MUAPI_API_KEY`, `MUAPI_BASE_URL` | Generasi media Open-Higgsfield / MuAPI |
-| `ALPHA_VANTAGE_API_KEY` | Harga, histori, kurs, sentimen berita (gratis, ±25 request/hari) |
+| `ALPHA_VANTAGE_API_KEY` | Opsional: harga saham, histori, kurs real-time, sentimen berita (gratis, ±25 request/hari). Tanpa kunci: berita, kurs ECB, dan data World Bank tetap jalan |
 | `PIXABAY_API_KEY`, `UNSPLASH_ACCESS_KEY` | Skrip stok media skill `edit-videoremotion` |
 
 Lihat [`.env.example`](.env.example).

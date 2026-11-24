@@ -46,3 +46,11 @@ def test_bloomberg_headlines():
 
     r = markets.bloomberg_headlines(["markets"], limit=5)
     assert r["count"] > 0 and r["items"][0]["url"].startswith("https://www.bloomberg.com/")
+
+
+def test_no_key_sources():
+    from research_analytics_mcp import markets
+
+    assert markets.fx_reference("USD", "IDR")["rate"] > 1000
+    assert markets.news_headlines(["cnbc_indonesia_market"], limit=3)["count"] > 0
+    assert markets.macro_indicator("inflation", "IDN", 3)["rows"]

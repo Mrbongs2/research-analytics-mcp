@@ -396,8 +396,35 @@ def market_history(symbol: str, days: int = 100) -> dict[str, Any]:
 
 @mcp.tool()
 def market_fx_rate(from_currency: str, to_currency: str = "IDR") -> dict[str, Any]:
-    """Real-time exchange rate, e.g. USD -> IDR, for converting market-size values (Alpha Vantage)."""
-    return markets.fx_rate(from_currency, to_currency)
+    """Exchange rate, e.g. USD -> IDR. Uses Alpha Vantage (real-time) when ALPHA_VANTAGE_API_KEY is set,
+    otherwise the free ECB daily reference rate (no key)."""
+    import os
+
+    if os.getenv("ALPHA_VANTAGE_API_KEY"):
+        return markets.fx_rate(from_currency, to_currency)
+    return markets.fx_reference(from_currency, to_currency)
+
+
+@mcp.tool()
+def market_fx_history(from_currency: str, to_currency: str = "IDR", start: str = "2025-01-01",
+                      end: str | None = None) -> dict[str, Any]:
+    """Daily ECB reference FX rates for a period (no key) with return, volatility and max drawdown."""
+    return markets.fx_history(from_currency, to_currency, start, end)
+
+
+@mcp.tool()
+def news_headlines(feeds: list[str] | None = None, query: str | None = None, limit: int = 20) -> dict[str, Any]:
+    """Headlines from other public news RSS (no key): cnbc_markets, marketwatch, cnbc_indonesia_market,
+    cnbc_indonesia_news, antara_ekonomi, fierce_healthcare, statnews. query filters by words."""
+    return markets.news_headlines(feeds, query, limit)
+
+
+@mcp.tool()
+def macro_indicator(indicator: str, country: str = "IDN", years: int = 10) -> dict[str, Any]:
+    """World Bank indicator by alias or code (no key): gdp_growth, inflation, gdp_per_capita_usd, population,
+    health_spending_pct_gdp, health_spending_per_capita_usd, out_of_pocket_pct_health, physicians_per_1000,
+    unemployment, lending_rate. country ISO2/ISO3, several with ';' (e.g. 'IDN;MYS;THA')."""
+    return markets.macro_indicator(indicator, country, years)
 
 
 @mcp.tool()
