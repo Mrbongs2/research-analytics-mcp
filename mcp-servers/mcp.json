@@ -11,7 +11,8 @@
         "OPENALEX_MAILTO": "",
         "SEMANTIC_SCHOLAR_API_KEY": "",
         "NCBI_API_KEY": "",
-        "MUAPI_API_KEY": ""
+        "MUAPI_API_KEY": "",
+        "ALPHA_VANTAGE_API_KEY": ""
       }
     },
     "openalex": {

@@ -9,7 +9,7 @@ try:  # MCP Python SDK 2.x
 except ImportError:  # SDK 1.x
     from mcp.server.fastmcp import FastMCP as _Server  # type: ignore[no-redef]
 
-from . import __version__, analytics, database, literature, market, training, video
+from . import __version__, analytics, database, literature, market, markets, training, video
 
 INSTRUCTIONS = """Research & analytics toolkit: literature search (OpenAlex, Semantic Scholar, PubMed,
 Crossref, ClinicalTrials.gov, WHO GHO), journal targeting, a local research database
@@ -365,6 +365,47 @@ def media_result(request_id: str, wait_seconds: int = 0) -> dict[str, Any]:
 def media_upload(file_path: str) -> dict[str, Any]:
     """Upload a local reference image/video/audio to MuAPI; returns a hosted URL for image/video-conditioned models."""
     return training.media_upload(file_path)
+
+
+# ================================================================ markets & news
+@mcp.tool()
+def bloomberg_headlines(sections: list[str] | None = None, query: str | None = None, limit: int = 20) -> dict[str, Any]:
+    """Latest Bloomberg headlines + short summaries + links from Bloomberg's public RSS feeds (no key).
+    sections: markets, economics, technology, industries, politics, businessweek, crypto, bview (opinion).
+    query filters by words in title/summary (e.g. 'Indonesia rupiah'). Headlines only; never copy article text."""
+    return markets.bloomberg_headlines(sections, query, limit)
+
+
+@mcp.tool()
+def market_quote(symbol: str) -> dict[str, Any]:
+    """Latest daily quote (price, change %, volume) from Alpha Vantage. Needs ALPHA_VANTAGE_API_KEY."""
+    return markets.quote(symbol)
+
+
+@mcp.tool()
+def market_symbol_search(keywords: str) -> dict[str, Any]:
+    """Find ticker symbols by company name (Alpha Vantage), with region and currency."""
+    return markets.symbol_search(keywords)
+
+
+@mcp.tool()
+def market_history(symbol: str, days: int = 100) -> dict[str, Any]:
+    """Daily closes (up to 100 days) with period return, annualised volatility and max drawdown (Alpha Vantage)."""
+    return markets.daily(symbol, days)
+
+
+@mcp.tool()
+def market_fx_rate(from_currency: str, to_currency: str = "IDR") -> dict[str, Any]:
+    """Real-time exchange rate, e.g. USD -> IDR, for converting market-size values (Alpha Vantage)."""
+    return markets.fx_rate(from_currency, to_currency)
+
+
+@mcp.tool()
+def market_news_sentiment(tickers: str | None = None, topics: str | None = None, limit: int = 20,
+                          sources: str | None = None) -> dict[str, Any]:
+    """Market news with sentiment scores from Alpha Vantage. tickers 'AAPL,MSFT' or 'FOREX:USD';
+    topics e.g. economy_macro, financial_markets, life_sciences, technology; sources filters by outlet name."""
+    return markets.news_sentiment(tickers, topics, limit, sources)
 
 
 # ================================================================ teaching video

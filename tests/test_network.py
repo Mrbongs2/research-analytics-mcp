@@ -39,3 +39,10 @@ def test_openverse():
 
     r = video.openverse_search("tooth anatomy", n=3)
     assert r["hits"] and r["hits"][0]["license"]
+
+
+def test_bloomberg_headlines():
+    from research_analytics_mcp import markets
+
+    r = markets.bloomberg_headlines(["markets"], limit=5)
+    assert r["count"] > 0 and r["items"][0]["url"].startswith("https://www.bloomberg.com/")

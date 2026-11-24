@@ -213,3 +213,47 @@ def test_video_probe(tmp_path):
                     "-f", "lavfi", "-i", "anullsrc=r=48000:cl=stereo", "-shortest", "-pix_fmt", "yuv420p", str(f)], check=True)
     p = video.probe(str(f))
     assert p["video"]["width"] == 320 and p["video"]["fps"] == 30.0 and p["audio"] and p["ready_for_concat"]
+
+
+# ---------------------------------------------------------------- markets & news
+RSS = """<?xml version="1.0"?><rss version="2.0"><channel><title>Bloomberg Markets</title>
+<item><title><![CDATA[Rupiah Gains as Bank Indonesia Holds Rates]]></title>
+<description><![CDATA[<p>The rupiah rose after the central bank kept its benchmark rate.</p>]]></description>
+<link>https://www.bloomberg.com/news/articles/x1</link><pubDate>Tue, 24 Nov 2026 10:30:00 GMT</pubDate></item>
+<item><title>Oil Falls</title><description>Crude slid.</description>
+<link>https://www.bloomberg.com/news/articles/x2</link><pubDate>Tue, 24 Nov 2026 09:00:00 GMT</pubDate></item>
+</channel></rss>"""
+
+
+def test_parse_bloomberg_rss():
+    from research_analytics_mcp import markets
+
+    items = markets.parse_rss(RSS, "markets")
+    assert items[0]["title"].startswith("Rupiah") and items[0]["summary"].startswith("The rupiah")
+    assert items[0]["published"].startswith("2026-11-24T10:30") and items[0]["section"] == "Markets"
+
+
+def test_bloomberg_query_filter(monkeypatch):
+    from research_analytics_mcp import markets
+
+    monkeypatch.setattr(markets, "get_text", lambda url, **kw: RSS)
+    r = markets.bloomberg_headlines(["markets", "economics"], query="rupiah bank")
+    assert r["count"] == 1 and r["items"][0]["url"].endswith("x1")  # de-duplicated across sections
+    with pytest.raises(ValueError):
+        markets.bloomberg_headlines(["sports"])
+
+
+def test_history_stats():
+    from research_analytics_mcp import markets
+
+    s = markets.history_stats([("d1", 100.0), ("d2", 110.0), ("d3", 99.0), ("d4", 105.0)])
+    assert s["period_return_pct"] == 5.0 and s["max_drawdown_pct"] == -10.0
+
+
+def test_alpha_vantage_needs_key(monkeypatch):
+    from research_analytics_mcp import markets
+    from research_analytics_mcp.http import UpstreamError
+
+    monkeypatch.delenv("ALPHA_VANTAGE_API_KEY", raising=False)
+    with pytest.raises(UpstreamError, match="ALPHA_VANTAGE_API_KEY"):
+        markets.quote("IBM")

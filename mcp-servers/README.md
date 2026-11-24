@@ -7,7 +7,7 @@ Ready-to-copy configs: [`codex-config.toml`](codex-config.toml) (Codex CLI) and
 
 | Server | Package | Used for | Key |
 |:--|:--|:--|:--|
-| **research-analytics** (this repo) | `uvx --from git+…/research-analytics-mcp` | literature, journals, research DB, statistics, market model, training design & evaluation, lesson plans, captions, Openverse, MuAPI | optional: `OPENALEX_MAILTO`, `SEMANTIC_SCHOLAR_API_KEY`, `NCBI_API_KEY`, `MUAPI_API_KEY` |
+| **research-analytics** (this repo) | `uvx --from git+…/research-analytics-mcp` | literature, journals, research DB, statistics, market model, training design & evaluation, lesson plans, captions, Openverse, MuAPI | optional: `OPENALEX_MAILTO`, `SEMANTIC_SCHOLAR_API_KEY`, `NCBI_API_KEY`, `MUAPI_API_KEY`, `ALPHA_VANTAGE_API_KEY` |
 | OpenAlex | `@cyanheads/openalex-mcp-server` | full OpenAlex query language, citation graph, group-by analytics | optional `OPENALEX_API_KEY` |
 | medical-mcp | `medical-mcp` | FDA/EMA drug data, FAERS safety, WHO, RxNorm, guidelines, clinical trials | none |
 | NotebookLM | `@m4ykeldev/notebooklm-mcp` | source-grounded Q&A over selected papers, briefing docs, study guides, quizzes, flashcards | Google sign-in (`… auth`) |
@@ -27,6 +27,7 @@ Ready-to-copy configs: [`codex-config.toml`](codex-config.toml) (Codex CLI) and
 - NCBI: ncbi.nlm.nih.gov/account/settings (API Key Management)
 - ElevenLabs: elevenlabs.io → Settings → API Keys · Pixabay: pixabay.com/api/docs (logged in)
 - MuAPI (Open-Higgsfield gateway): muapi.ai dashboard · Unsplash: unsplash.com/developers
+- Alpha Vantage (quotes, FX, news sentiment): alphavantage.co/support/#api-key
 
 Store a key without it showing on screen or in shell history:
 
@@ -48,3 +49,10 @@ MarkItDown    (study guide)  MuAPI B-roll                        stats_* (deeper
                              Remotion + FFmpeg
                              video_captions
 ```
+
+## Market & news
+
+Bloomberg headlines come from Bloomberg's public RSS feeds through the `bloomberg_headlines` tool
+of this server (no key). Quotes, FX and news sentiment use Alpha Vantage. The community project
+github.com/feremabraz/bloomberg-terminal is a Next.js dashboard demo, not an MCP server; it is not
+included here. None of this is affiliated with Bloomberg L.P. or provides Bloomberg Terminal data.
